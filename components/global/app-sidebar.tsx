@@ -7,15 +7,15 @@ import { usePathname } from "next/navigation"
 
 
 const MENU_ITEMS = [
-    { key: "home", url: "/home", icon: Home },
-    { key: "memberRegistry", url: "/home/members", icon: UsersRound },
-    { key: "contributionLedger", url: "/home/contributions", icon: Wallet },
-    { key: "loansManagement", url: "/home/loans", icon: HandCoins },
-    { key: "meetingsMinutes", url: "/home/meetings", icon: ClipboardPenLine },
-    { key: "shares", url: "/home/shares", icon: BanknoteArrowUp },
-    { key: "penalties", url: "/home/penalties", icon: UserRoundMinus },
-    { key: "fundDisbursements", url: "/home/funds", icon: BanknoteArrowUp },
-    { key: "settings", url: "/home/settings", icon: Settings },
+    { key: "Home", url: "/home", icon: Home },
+    { key: "Members", url: "/home/members", icon: UsersRound },
+    { key: "Contributions", url: "/home/contributions", icon: Wallet },
+    { key: "Loans", url: "/home/loans", icon: HandCoins },
+    { key: "Meetings", url: "/home/meetings", icon: ClipboardPenLine },
+    { key: "Shares", url: "/home/shares", icon: BanknoteArrowUp },
+    { key: "Penalties", url: "/home/penalties", icon: UserRoundMinus },
+    { key: "Disbursements", url: "/home/disbursements", icon: BanknoteArrowUp },
+    { key: "Settings", url: "/home/settings", icon: Settings },
 ] as const
 
 
