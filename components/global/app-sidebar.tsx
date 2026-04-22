@@ -1,21 +1,18 @@
 "use client"
 
-import { Home, UsersRound, Wallet, HandCoins, ClipboardPenLine, BanknoteArrowUp, UserRoundMinus, Settings, Shield } from "lucide-react"
+import { Home, UsersRound, Wallet, Bell, BanknoteArrowUp, Shield, UserRound } from "lucide-react"
 import { SidebarContent, Sidebar, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 
 const MENU_ITEMS = [
-    { key: "home", url: "/home", icon: Home },
-    { key: "memberRegistry", url: "/home/members", icon: UsersRound },
-    { key: "contributionLedger", url: "/home/contributions", icon: Wallet },
-    { key: "loansManagement", url: "/home/loans", icon: HandCoins },
-    { key: "meetingsMinutes", url: "/home/meetings", icon: ClipboardPenLine },
-    { key: "shares", url: "/home/shares", icon: BanknoteArrowUp },
-    { key: "penalties", url: "/home/penalties", icon: UserRoundMinus },
-    { key: "fundDisbursements", url: "/home/funds", icon: BanknoteArrowUp },
-    { key: "settings", url: "/home/settings", icon: Settings },
+    { key: "Home", url: "/home", icon: Home },
+    { key: "Users", url: "/home/users", icon: UserRound },
+    { key: "Groups", url: "/home/groups", icon: UsersRound },
+    { key: "Billings", url: "/home/billings", icon: Wallet },
+    { key: "Contributions", url: "/home/contributions", icon: BanknoteArrowUp },
+    { key: "Notifications", url: "/home/notifications", icon: Bell },
 ] as const
 
 
@@ -44,7 +41,10 @@ export default function AppSidebar() {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {MENU_ITEMS.map((item) => {
-                                const isActive = pathname === item.url
+                                const isActive =
+                                    item.url === "/home"
+                                        ? pathname === "/home"
+                                        : pathname.startsWith(item.url)
                                 return (
                                     <SidebarMenuItem key={item.key}>
                                         <SidebarMenuButton
