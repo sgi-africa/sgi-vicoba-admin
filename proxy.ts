@@ -22,5 +22,6 @@ export default auth((req) => {
 });
 
 export const config = {
-    matcher: ["/home/:path*", "/auth/:path*"],
+    // Include `/home` — some matcher patterns only match nested paths under /home/...
+    matcher: ["/home", "/home/:path*", "/auth", "/auth/:path*"],
 };
