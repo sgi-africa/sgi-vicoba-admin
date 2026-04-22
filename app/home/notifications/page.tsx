@@ -1,5 +1,5 @@
 export default function page() {
     return (
-        <div>Settings page</div>
+        <div>Notifications page</div>
     )
 }

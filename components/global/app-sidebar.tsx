@@ -8,14 +8,10 @@ import { usePathname } from "next/navigation"
 
 const MENU_ITEMS = [
     { key: "Home", url: "/home", icon: Home },
-    { key: "Members", url: "/home/members", icon: UsersRound },
-    { key: "Contributions", url: "/home/contributions", icon: Wallet },
-    { key: "Loans", url: "/home/loans", icon: HandCoins },
-    { key: "Meetings", url: "/home/meetings", icon: ClipboardPenLine },
-    { key: "Shares", url: "/home/shares", icon: BanknoteArrowUp },
-    { key: "Penalties", url: "/home/penalties", icon: UserRoundMinus },
-    { key: "Disbursements", url: "/home/disbursements", icon: BanknoteArrowUp },
-    { key: "Settings", url: "/home/settings", icon: Settings },
+    { key: "Groups", url: "/home/groups", icon: UsersRound },
+    { key: "Billings", url: "/home/billings", icon: Wallet },
+    { key: "Notifications", url: "/home/notifications", icon: HandCoins },
+    { key: "Contributions", url: "/home/contributions", icon: BanknoteArrowUp },
 ] as const
 
 
