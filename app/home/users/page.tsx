@@ -1,14 +1,15 @@
-import { getGroups } from "./_actions"
-import { GroupsDataTable } from "@/components/groups/groups-data-table"
-import { GroupsListToolbar } from "@/components/groups/groups-list-toolbar"
-import { GroupsListPagination } from "@/components/groups/groups-list-pagination"
+import { getUsers } from "./_actions"
+import { UsersDataTable } from "@/components/users/users-data-table"
+import { UsersListToolbar } from "@/components/users/users-list-toolbar"
+import { UsersListPagination } from "@/components/users/users-list-pagination"
 import { DataError } from "@/components/shared/data-error"
 import { handleApiError } from "@/lib/apiError"
 import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { GroupsPageProps } from "@/interfaces/interface"
+import { UsersPageProps } from "@/interfaces/interface"
 
-export default async function GroupsPage({ searchParams }: GroupsPageProps) {
+
+export default async function UsersPage({ searchParams }: UsersPageProps) {
   const params = await searchParams
   const page = Number(params.page ?? 1)
   const limit = Number(params.limit ?? 20)
@@ -17,17 +18,13 @@ export default async function GroupsPage({ searchParams }: GroupsPageProps) {
   let apiError
 
   try {
-    data = await getGroups({
+    data = await getUsers({
       page,
       limit,
       q: params.q,
-      billingStatus: params.billingStatus as
-        | "INACTIVE"
-        | "ACTIVE"
-        | "OVERDUE"
-        | undefined,
+      systemRole: params.systemRole as "ADMIN" | "USER" | undefined,
       isActive: params.isActive,
-      isDeleted: params.isDeleted,
+      kycVerified: params.kycVerified,
     })
   } catch (error) {
     apiError = handleApiError(error)
@@ -37,7 +34,7 @@ export default async function GroupsPage({ searchParams }: GroupsPageProps) {
     return <DataError status={apiError.status} message={apiError.message} />
   }
 
-  const groups = data?.data ?? []
+  const users = data?.data ?? []
   const total = data?.total ?? 0
 
   return (
@@ -46,10 +43,10 @@ export default async function GroupsPage({ searchParams }: GroupsPageProps) {
         <CardHeader className="space-y-6 border-b px-6 py-6">
           <div>
             <CardTitle className="text-xl font-bold tracking-tight text-foreground">
-              Groups
+              Users
             </CardTitle>
             <CardDescription className="mt-1.5 text-sm text-muted-foreground">
-              Your SGI VICOBA groups, billing state, and membership overview.
+              Your platform user directory, roles, and access overview.
             </CardDescription>
           </div>
           <Suspense
@@ -60,23 +57,22 @@ export default async function GroupsPage({ searchParams }: GroupsPageProps) {
               />
             }
           >
-            <GroupsListToolbar groups={groups} />
+            <UsersListToolbar users={users} />
           </Suspense>
         </CardHeader>
         <CardContent className="border-b px-0">
-          <GroupsDataTable groups={groups} />
+          <UsersDataTable users={users} />
         </CardContent>
         <CardFooter className="flex flex-col border-t border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           <Suspense
             fallback={
               <p className="text-sm text-muted-foreground">
-                Showing {total > 0 ? "…" : "0"} to {total > 0 ? "…" : "0"} of{" "}
-                {total}
+                Showing {total > 0 ? "…" : "0"} to {total > 0 ? "…" : "0"} of {total}
               </p>
             }
           >
             {data && (
-              <GroupsListPagination
+              <UsersListPagination
                 total={total}
                 page={page}
                 limit={limit}
