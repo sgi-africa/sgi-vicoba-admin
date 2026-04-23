@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { StatusBadge } from "@/components/admin/shared/status-badge"
+import { StatusBadge } from "@/components/shared/status-badge"
 import { Mail, Phone, Shield, Calendar } from "lucide-react"
 import { UserDetailCardProps } from "@/interfaces/interface"
 
