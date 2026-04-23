@@ -1,13 +1,10 @@
 import type { ReadonlyURLSearchParams } from "next/navigation"
 
-/** Apply query patch; `null`/`""` removes a key. Resets to page 1 when any non-page key changes. */
-export function buildUsersListHref(
-  sp: ReadonlyURLSearchParams | string,
-  patch: Record<string, string | null | undefined>
-): string {
-  const params = new URLSearchParams(
-    typeof sp === "string" ? sp : sp.toString()
-  )
+const BASE = "/home/groups"
+
+export function buildGroupsListHref(sp: ReadonlyURLSearchParams | string, patch: Record<string, string | null | undefined>): string {
+
+  const params = new URLSearchParams(typeof sp === "string" ? sp : sp.toString())
 
   for (const [key, value] of Object.entries(patch)) {
     if (value === null || value === undefined || value === "") {
@@ -23,10 +20,10 @@ export function buildUsersListHref(
   }
 
   const qs = params.toString()
-  return qs ? `/home/users?${qs}` : "/home/users"
+  return qs ? `${BASE}?${qs}` : BASE
 }
 
-export function buildUsersPageHref(
+export function buildGroupsPageHref(
   sp: ReadonlyURLSearchParams | string,
   page: number,
   rest?: { limit?: string }
@@ -36,5 +33,5 @@ export function buildUsersPageHref(
   )
   params.set("page", String(page))
   if (rest?.limit) params.set("limit", rest.limit)
-  return `/home/users?${params.toString()}`
+  return `${BASE}?${params.toString()}`
 }
