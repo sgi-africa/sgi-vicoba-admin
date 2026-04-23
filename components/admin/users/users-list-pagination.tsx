@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { buildUsersPageHref } from "./users-list-url"
+import { buildUsersPageHref } from "../../../utils/users/users-list-url"
 import { cn } from "@/lib/utils"
 import { pageWindow } from "@/utils/users/pageWindow"
 
