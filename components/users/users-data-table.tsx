@@ -10,7 +10,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { MoreHorizontal, Shield, UserRound, Mail, Phone } from "lucide-react"
 import type { AdminUser } from "@/interfaces/interface"
 import { initials } from "@/utils/users/initials"
-import { HeaderSort } from "./header-sort"
 import { ActiveBadge } from "./active-badge"
 import { KycBadge } from "./kyc-badge"
 
@@ -60,19 +59,13 @@ export function UsersDataTable({ users }: { users: AdminUser[] }) {
               aria-label="Select all on this page"
             />
           </TableHead>
-          <TableHead className="px-4">
-            <HeaderSort>User</HeaderSort>
-          </TableHead>
-          <TableHead className="px-4">
-            <HeaderSort>Email</HeaderSort>
-          </TableHead>
+          <TableHead className="px-4">User</TableHead>
+          <TableHead className="px-4">Email</TableHead>
           <TableHead className="px-4">Phone</TableHead>
           <TableHead className="px-4">Role</TableHead>
           <TableHead className="px-4">Status</TableHead>
           <TableHead className="px-4">KYC</TableHead>
-          <TableHead className="px-4">
-            <HeaderSort>Join date</HeaderSort>
-          </TableHead>
+          <TableHead className="px-4">Join date</TableHead>
           <TableHead className="w-12 pr-6 text-right" />
         </TableRow>
       </TableHeader>

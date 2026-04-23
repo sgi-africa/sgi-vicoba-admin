@@ -1,6 +1,6 @@
 import { getUserById } from "../_actions"
-import { UserDetailCard } from "@/components/admin/users/user-detail-card"
-import { UserActions } from "@/components/admin/users/user-actions"
+import { UserDetailCard } from "@/components/users/user-detail-card"
+import { UserActions } from "@/components/users/user-actions"
 import { DataError } from "@/components/admin/shared/data-error"
 import { handleApiError } from "@/lib/apiError"
 import { Button } from "@/components/ui/button"
