@@ -7,7 +7,6 @@ import { buildUsersPageHref } from "./users-list-url"
 import { cn } from "@/lib/utils"
 import { pageWindow } from "@/utils/users/pageWindow"
 
-
 const pageButtonClass = "inline-flex size-8 shrink-0 items-center justify-center rounded-md border text-sm font-medium transition-colors"
 
 export function UsersListPagination({
