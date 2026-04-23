@@ -1,7 +1,7 @@
 import { getUserById } from "../_actions"
 import { UserDetailCard } from "@/components/users/user-detail-card"
 import { UserActions } from "@/components/users/user-actions"
-import { DataError } from "@/components/admin/shared/data-error"
+import { DataError } from "@/components/shared/data-error"
 import { handleApiError } from "@/lib/apiError"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
