@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { NotificationStatusBadge } from "./notification-status-badge"
+import { StatusBadge } from "@/components/shared/status-badge"
 import { NotificationsTableProps } from "@/interfaces/interface"
 
 
@@ -40,7 +40,7 @@ export function NotificationsTable({ notifications }: NotificationsTableProps) {
                   : n.userId ?? "Broadcast"}
               </TableCell>
               <TableCell className="align-top py-3">
-                <NotificationStatusBadge status={n.status} />
+                <StatusBadge status={n.status} prettyLabel />
               </TableCell>
               <TableCell className="align-top py-3 text-sm text-muted-foreground">
                 {new Date(n.createdAt).toLocaleDateString()}
