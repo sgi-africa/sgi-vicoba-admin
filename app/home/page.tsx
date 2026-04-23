@@ -1,6 +1,6 @@
 import { getAnalyticsSummary, getHealthStatus } from "./_actions"
-import { SummaryCards } from "@/components/admin/analytics/summary-cards"
-import { DashboardPdfDownload } from "@/components/admin/analytics/dashboard-pdf-download"
+import { SummaryCards } from "@/components/analytics/summary-cards"
+import { DashboardPdfDownload } from "@/components/analytics/dashboard-pdf-download"
 
 export default async function DashboardPage() {
   const now = new Date()
