@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { StatusBadge } from "@/components/shared/status-badge"
-import { Mail, Phone, Shield, Calendar } from "lucide-react"
+import { Calendar, ExternalLink, Mail, Phone, Shield } from "lucide-react"
 import { UserDetailCardProps } from "@/interfaces/interface"
 
 
@@ -44,6 +45,21 @@ export function UserDetailCard({ user }: UserDetailCardProps) {
             Joined {new Date(user.createdAt).toLocaleDateString()}
           </span>
         </div>
+        {user.idDocumentUrl ? (
+          <div className="flex items-center sm:col-span-2">
+            <Button variant="outline" size="sm" asChild>
+              <a
+                href={user.idDocumentUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2"
+              >
+                <ExternalLink className="size-4 shrink-0" />
+                View ID document
+              </a>
+            </Button>
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   )

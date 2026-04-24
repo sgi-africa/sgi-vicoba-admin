@@ -137,6 +137,7 @@ export interface AdminUser {
   isActive: boolean
   isDeleted: boolean
   kycVerified: boolean
+  idDocumentUrl?: string | null
   createdAt: string
   updatedAt: string
   memberships?: GroupMembership[]
