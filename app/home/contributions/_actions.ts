@@ -1,11 +1,7 @@
 'use server'
 
 import { api } from "@/lib/api"
-import type {
-  Contribution,
-  GetContributionsParams,
-  PaginatedResponse,
-} from "@/interfaces/interface"
+import type { Contribution, GetContributionsParams, PaginatedResponse } from "@/interfaces/interface"
 
 export async function getContributions(
   params: GetContributionsParams

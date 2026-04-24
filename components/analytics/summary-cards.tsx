@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { SummaryCardsProps, StatCardProps } from "@/interfaces/interface"
+import { healthIsOk, healthBadgeLabel } from "@/utils/status/status"
 import { Users, UsersRound, TrendingUp, Activity } from "lucide-react"
-
 
 function StatCard({ title, value, sub, icon }: StatCardProps) {
   return (
@@ -25,6 +25,8 @@ function StatCard({ title, value, sub, icon }: StatCardProps) {
   )
 }
 
+
+
 export function SummaryCards({ summary, health }: SummaryCardsProps) {
   return (
     <div className="space-y-6">
@@ -34,14 +36,14 @@ export function SummaryCards({ summary, health }: SummaryCardsProps) {
           <Badge
             variant="outline"
             className={
-              health.status?.toLowerCase() === "ok" ||
-                health.status?.toLowerCase() === "healthy"
+              healthIsOk(health)
                 ? "border-emerald-200 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
                 : "border-red-200 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
             }
+            title={health.sub != null ? `sub: ${health.sub}` : undefined}
           >
             <Activity className="size-3 mr-1" />
-            API {health.status}
+            {healthBadgeLabel(health)}
           </Badge>
         ) : (
           <Badge variant="outline" className="text-muted-foreground">
@@ -54,19 +56,19 @@ export function SummaryCards({ summary, health }: SummaryCardsProps) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
           title="Total Users"
-          value={summary?.totalUsers}
+          value={summary?.usersCreated}
           sub={`${summary?.activeUsers ?? 0} active`}
           icon={<Users className="size-4" />}
         />
         <StatCard
           title="Total Groups"
-          value={summary?.totalGroups}
+          value={summary?.groupsCreated}
           sub={`${summary?.activeGroups ?? 0} active`}
           icon={<UsersRound className="size-4" />}
         />
         <StatCard
           title="Total Contributions"
-          value={summary?.totalContributions}
+          value={summary?.contributions?.count}
           icon={<TrendingUp className="size-4" />}
         />
       </div>
@@ -82,15 +84,21 @@ export function SummaryCards({ summary, health }: SummaryCardsProps) {
             <CardContent className="space-y-1 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Pending</span>
-                <span className="font-medium">{summary.pendingBillings ?? 0}</span>
+                <span className="font-medium">
+                  {summary.pendingBillings ?? 0}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Paid</span>
-                <span className="font-medium">{summary.paidBillings ?? 0}</span>
+                <span className="font-medium">
+                  {summary.paidBillings ?? summary.billingPaid?.count ?? 0}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Failed</span>
-                <span className="font-medium">{summary.failedBillings ?? 0}</span>
+                <span className="font-medium">
+                  {summary.failedBillings ?? 0}
+                </span>
               </div>
             </CardContent>
           </Card>

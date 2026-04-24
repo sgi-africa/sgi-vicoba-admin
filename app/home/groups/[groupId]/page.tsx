@@ -1,6 +1,8 @@
+import { Suspense } from "react"
 import { getGroupById, getGroupMembers } from "../_actions"
 import { GroupDetailCard } from "@/components/groups/group-detail-card"
 import { GroupMembersTable } from "@/components/groups/group-members-table"
+import { GroupMembersToolbar } from "@/components/groups/group-members-toolbar"
 import { GroupActions } from "@/components/groups/group-actions"
 import { DataError } from "@/components/shared/data-error"
 import { Pagination } from "@/components/shared/pagination"
@@ -19,6 +21,8 @@ export default async function GroupDetailPage({
   const sp = await searchParams
   const page = Number(sp.page ?? 1)
   const limit = Number(sp.limit ?? 20)
+  const q = sp.q
+  const kycVerified = sp.kycVerified
 
   let group
   let membersData
@@ -27,7 +31,7 @@ export default async function GroupDetailPage({
   try {
     ;[group, membersData] = await Promise.all([
       getGroupById(groupId),
-      getGroupMembers(groupId, { page, limit }),
+      getGroupMembers(groupId, { page, limit, q, kycVerified }),
     ])
   } catch (error) {
     apiError = handleApiError(error)
@@ -60,8 +64,23 @@ export default async function GroupDetailPage({
       <GroupDetailCard group={group} />
       <GroupActions group={group} />
 
-      <div>
-        <h2 className="text-lg font-semibold mb-3">Members</h2>
+      <div className="space-y-3">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-lg font-semibold">Members</h2>
+          <Suspense
+            fallback={
+              <div
+                className="h-10 w-full max-w-3xl rounded-lg bg-muted/30 animate-pulse sm:max-w-md"
+                aria-hidden
+              />
+            }
+          >
+            <GroupMembersToolbar
+              groupId={groupId}
+              members={membersData?.data ?? []}
+            />
+          </Suspense>
+        </div>
         <GroupMembersTable members={membersData?.data ?? []} />
         {membersData && (
           <Pagination
@@ -69,6 +88,10 @@ export default async function GroupDetailPage({
             page={page}
             limit={limit}
             baseUrl={`/home/groups/${groupId}`}
+            searchParams={{
+              ...(q && { q }),
+              ...(kycVerified && { kycVerified }),
+            }}
           />
         )}
       </div>

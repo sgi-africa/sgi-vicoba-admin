@@ -1,23 +1,13 @@
 import { getContributions } from "./_actions"
-import { ContributionsTable } from "@/components/contributions/contributions-table"
-import { TypeToggle } from "@/components/contributions/type-toggle"
-import { Pagination } from "@/components/shared/pagination"
+import { ContributionsDataTable } from "@/components/contributions/contributions-data-table"
+import { ContributionsListToolbar } from "@/components/contributions/contributions-list-toolbar"
+import { ContributionsListPagination } from "@/components/contributions/contributions-list-pagination"
 import { DataError } from "@/components/shared/data-error"
 import { handleApiError } from "@/lib/apiError"
 import { Suspense } from "react"
-import type { ContributionType } from "@/interfaces/interface"
-
-interface ContributionsPageProps {
-  searchParams: Promise<{
-    page?: string
-    limit?: string
-    type?: string
-    groupId?: string
-    userId?: string
-    from?: string
-    to?: string
-  }>
-}
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import type { ContributionsPageProps } from "@/interfaces/interface"
+import { parseContributionTypeParam } from "@/utils/contributions/contributionType"
 
 export default async function ContributionsPage({
   searchParams,
@@ -25,7 +15,7 @@ export default async function ContributionsPage({
   const params = await searchParams
   const page = Number(params.page ?? 1)
   const limit = Number(params.limit ?? 20)
-  const type = (params.type as ContributionType) ?? "contribution"
+  const type = parseContributionTypeParam(params.type)
 
   let data
   let apiError
@@ -39,6 +29,7 @@ export default async function ContributionsPage({
       userId: params.userId,
       from: params.from,
       to: params.to,
+      q: params.q,
     })
   } catch (error) {
     apiError = handleApiError(error)
@@ -48,38 +39,57 @@ export default async function ContributionsPage({
     return <DataError status={apiError.status} message={apiError.message} />
   }
 
-  const filterParams = {
-    type,
-    groupId: params.groupId,
-    userId: params.userId,
-    from: params.from,
-    to: params.to,
-  }
+  const contributions = data?.data ?? []
+  const total = data?.total ?? 0
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Contributions</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Browse member contributions and loan repayments.
-        </p>
-      </div>
-
-      <Suspense>
-        <TypeToggle currentType={type} />
-      </Suspense>
-
-      <ContributionsTable contributions={data?.data ?? []} />
-
-      {data && (
-        <Pagination
-          total={data.total}
-          page={page}
-          limit={limit}
-          baseUrl="/home/contributions"
-          searchParams={filterParams}
-        />
-      )}
+    <div className="p-6">
+      <Card className="overflow-hidden gap-0 py-0">
+        <CardHeader className="space-y-6 border-b px-6 py-6">
+          <div>
+            <CardTitle className="text-xl font-bold tracking-tight text-foreground">
+              Contributions
+            </CardTitle>
+            <CardDescription className="mt-1.5 text-sm text-muted-foreground">
+              Browse member contributions and loan repayments.
+            </CardDescription>
+          </div>
+          <Suspense
+            fallback={
+              <div
+                className="h-10 w-full max-w-3xl rounded-lg bg-muted/30 animate-pulse"
+                aria-hidden
+              />
+            }
+          >
+            <ContributionsListToolbar
+              currentType={type}
+              contributions={contributions}
+            />
+          </Suspense>
+        </CardHeader>
+        <CardContent className="border-b px-0">
+          <ContributionsDataTable contributions={contributions} />
+        </CardContent>
+        <CardFooter className="flex flex-col border-t border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <Suspense
+            fallback={
+              <p className="text-sm text-muted-foreground">
+                Showing {total > 0 ? "…" : "0"} to {total > 0 ? "…" : "0"} of{" "}
+                {total}
+              </p>
+            }
+          >
+            {data && (
+              <ContributionsListPagination
+                total={total}
+                page={page}
+                limit={limit}
+              />
+            )}
+          </Suspense>
+        </CardFooter>
+      </Card>
     </div>
   )
 }

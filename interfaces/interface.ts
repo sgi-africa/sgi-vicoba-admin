@@ -84,7 +84,12 @@ export interface GroupActionsProps {
 
 export interface GroupDetailPageProps {
   params: Promise<{ groupId: string }>
-  searchParams: Promise<{ page?: string; limit?: string }>
+  searchParams: Promise<{
+    page?: string
+    limit?: string
+    q?: string
+    kycVerified?: string
+  }>
 }
 
 export interface NotificationsPageProps {
@@ -112,10 +117,11 @@ export interface StatusBadgeProps {
   prettyLabel?: boolean
 }
 
+/** Response from `GET /admin/health` (and similar). */
 export interface HealthStatus {
-  status: string
-  uptime?: number
-  timestamp?: string
+  /** Present on current API: `true` means healthy. */
+  ok?: boolean
+  sub?: number
 }
 
 export interface SummaryCardsProps {
@@ -136,6 +142,7 @@ export interface AdminUser {
   isActive: boolean
   isDeleted: boolean
   kycVerified: boolean
+  idDocumentUrl?: string | null
   createdAt: string
   updatedAt: string
   memberships?: GroupMembership[]
@@ -205,7 +212,23 @@ export interface GetGroupsParams {
 export interface GetGroupMembersParams {
   page?: number
   limit?: number
+  q?: string
+  kycVerified?: string
 }
+
+export interface ContributionsPageProps {
+  searchParams: Promise<{
+    page?: string
+    limit?: string
+    type?: string
+    groupId?: string
+    userId?: string
+    from?: string
+    to?: string
+    q?: string
+  }>
+}
+
 
 export type PaymentStatus = "PENDING" | "PAID" | "FAILED"
 
@@ -238,6 +261,7 @@ export interface UpdateBillingStatusBody {
   paidAt?: string
 }
 
+/** Query param for `GET /admin/contributions` — must match backend enum. */
 export type ContributionType = "contribution" | "loanRepayment"
 
 export interface Contribution {
@@ -267,6 +291,7 @@ export interface GetContributionsParams {
   userId?: string
   from?: string
   to?: string
+  q?: string
 }
 
 export interface Notification {
@@ -294,18 +319,31 @@ export interface GetNotificationsParams {
 }
 
 export interface AnalyticsSummary {
-  totalUsers?: number
+  period?: {
+    from: string
+    to: string
+  }
+  usersCreated?: number
+  groupsCreated?: number
+  /** When the API returns separate “active” counts for the summary cards. */
   activeUsers?: number
-  totalGroups?: number
   activeGroups?: number
-  totalContributions?: number
-  totalContributionAmount?: number
-  totalBillings?: number
+  contributions?: {
+    count?: number
+    totalAmount?: number | string
+  }
+  loanRepayments?: {
+    count?: number
+    totalAmount?: number | string
+  }
+  billingPaid?: {
+    count?: number
+    totalTzs?: number | string
+  }
+  /** Legacy / optional; billings rows fall back to `billingPaid` when missing. */
   pendingBillings?: number
   paidBillings?: number
   failedBillings?: number
-  totalRevenue?: number
-  [key: string]: number | string | undefined
 }
 
 export interface GetAnalyticsSummaryParams {

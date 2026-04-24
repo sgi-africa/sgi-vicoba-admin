@@ -37,6 +37,10 @@ const STATUS_STYLES: Record<string, string> = {
   PROCESSING: AMBER,
   SCHEDULED: AMBER,
   DRAFT: AMBER,
+  // Contributions
+  SAVINGS: EMERALD,
+  JAMII: AMBER,
+  LOAN_REPAYMENT: RED,
   // Generic
   true: EMERALD,
   false: SLATE,
