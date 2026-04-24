@@ -127,6 +127,10 @@ export interface HealthStatus {
 export interface SummaryCardsProps {
   summary: AnalyticsSummary | null
   health: HealthStatus | null
+  /** Same totals as /home/users (`data.total` from getUsers) */
+  usersDirectory?: { total: number; activeTotal: number }
+  /** Same totals as /home/groups (`data.total` from getGroups) */
+  groupsDirectory?: { total: number; activeTotal: number }
 }
 
 
