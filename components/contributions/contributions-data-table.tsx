@@ -12,6 +12,18 @@ import { StatusBadge } from "@/components/shared/status-badge"
 import type { Contribution } from "@/interfaces/interface"
 import { formatCurrencyTZS } from "@/utils/global/formatAmount"
 import { memberInitials } from "@/utils/contributions/memberInitials"
+import {
+  getContributionDisplayDateString,
+  getGroupDisplayName,
+  getGroupIdForLink,
+  getGroupSubLine,
+  getMemberIdLine,
+  getMemberName,
+  getUserIdForLink,
+  isLoanRepaymentRow,
+  parseContributionAmount,
+  rowId,
+} from "@/utils/contributions/contributionRow"
 
 
 export function ContributionsDataTable({
@@ -20,7 +32,7 @@ export function ContributionsDataTable({
   contributions: Contribution[]
 }) {
   const [selected, setSelected] = React.useState<Set<string>>(new Set())
-  const allIds = contributions.map((c) => c.id)
+  const allIds = contributions.map((c) => rowId(c))
   const allSelected =
     contributions.length > 0 && selected.size === contributions.length
   const someSelected = selected.size > 0 && !allSelected
@@ -72,13 +84,15 @@ export function ContributionsDataTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {contributions.map((c) => (
-          <TableRow key={c.id} className="group">
+        {contributions.map((c) => {
+          const idKey = rowId(c)
+          return (
+          <TableRow key={idKey} className="group">
             <TableCell className="py-3 pl-6">
               <Checkbox
-                checked={selected.has(c.id)}
-                onCheckedChange={(v) => toggleOne(c.id, !!v)}
-                aria-label={`Select row ${c.id}`}
+                checked={selected.has(idKey)}
+                onCheckedChange={(v) => toggleOne(idKey, !!v)}
+                aria-label={`Select row ${idKey}`}
               />
             </TableCell>
             <TableCell className="min-w-0 py-3 px-4">
@@ -90,13 +104,11 @@ export function ContributionsDataTable({
                 </Avatar>
                 <div className="min-w-0">
                   <p className="font-semibold leading-tight text-foreground truncate">
-                    {c.user
-                      ? `${c.user.firstName} ${c.user.lastName}`.trim()
-                      : c.userId}
+                    {getMemberName(c)}
                   </p>
                   <p className="text-xs text-muted-foreground flex items-center gap-1">
                     <UserRound className="size-3 shrink-0" />
-                    {c.userId}
+                    {getMemberIdLine(c)}
                   </p>
                 </div>
               </div>
@@ -104,35 +116,25 @@ export function ContributionsDataTable({
             <TableCell className="min-w-0 py-3 px-4">
               <div className="min-w-0 max-w-xs sm:max-w-md">
                 <p className="font-medium leading-tight text-foreground truncate">
-                  {c.group?.name ?? c.groupId}
+                  {getGroupDisplayName(c)}
                 </p>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
                   <Building2 className="size-3 shrink-0" />
-                  {c.groupId}
+                  {getGroupSubLine(c)}
                 </p>
               </div>
             </TableCell>
             <TableCell className="py-3 px-4">
               <StatusBadge
-                status={
-                  c.type === "loanRepayment" ? "PENDING" : "ACTIVE"
-                }
-                label={
-                  c.type === "loanRepayment"
-                    ? "Loan repayment"
-                    : "Contribution"
-                }
+                status={isLoanRepaymentRow(c) ? "PENDING" : "ACTIVE"}
+                label={isLoanRepaymentRow(c) ? "Loan repayment" : "Contribution"}
               />
             </TableCell>
             <TableCell className="py-3 px-4 text-right font-medium tabular-nums">
-              {formatCurrencyTZS(c.amount)}
+              {formatCurrencyTZS(parseContributionAmount(c))}
             </TableCell>
             <TableCell className="whitespace-nowrap py-3 px-4 text-sm text-muted-foreground">
-              {new Date(c.createdAt).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
+              {getContributionDisplayDateString(c)}
             </TableCell>
             <TableCell className="py-3 pr-6 text-right">
               <DropdownMenu>
@@ -147,21 +149,25 @@ export function ContributionsDataTable({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
-                    <Link href={`/home/users/${c.userId}`}>
-                      View member
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href={`/home/groups/${c.groupId}`}>
-                      View group
-                    </Link>
-                  </DropdownMenuItem>
+                  {getUserIdForLink(c) ? (
+                    <DropdownMenuItem asChild>
+                      <Link href={`/home/users/${getUserIdForLink(c)}`}>
+                        View member
+                      </Link>
+                    </DropdownMenuItem>
+                  ) : null}
+                  {getGroupIdForLink(c) ? (
+                    <DropdownMenuItem asChild>
+                      <Link href={`/home/groups/${getGroupIdForLink(c)}`}>
+                        View group
+                      </Link>
+                    </DropdownMenuItem>
+                  ) : null}
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>
           </TableRow>
-        ))}
+        )})}
       </TableBody>
     </Table>
   )
