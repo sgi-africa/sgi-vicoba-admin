@@ -312,17 +312,20 @@ export interface GetContributionsParams {
 }
 
 export interface Notification {
-  id: string
-  userId?: string
+  id: string | number
+  userId?: string | number
   status: string
   message: string
-  createdAt: string
-  updatedAt: string
+  /** When the message was sent (admin list API). */
+  sentAt?: string
+  createdAt?: string
+  updatedAt?: string
   user?: {
-    id: string
+    id: string | number
     firstName: string
     lastName: string
-    email: string
+    email?: string
+    phone?: string
   }
 }
 

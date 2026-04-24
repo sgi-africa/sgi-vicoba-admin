@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { StatusBadge } from "@/components/shared/status-badge"
 import { NotificationsTableProps } from "@/interfaces/interface"
+import { formatIsoSafe } from "@/utils/global/formatDate"
 
 
 export function NotificationsTable({ notifications }: NotificationsTableProps) {
@@ -43,7 +44,7 @@ export function NotificationsTable({ notifications }: NotificationsTableProps) {
                 <StatusBadge status={n.status} prettyLabel />
               </TableCell>
               <TableCell className="align-top py-3 text-sm text-muted-foreground">
-                {new Date(n.createdAt).toLocaleDateString()}
+                {formatIsoSafe(n.sentAt ?? n.createdAt ?? n.updatedAt)}
               </TableCell>
             </TableRow>
           ))}
