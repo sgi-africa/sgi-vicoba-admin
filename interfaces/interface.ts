@@ -193,7 +193,7 @@ export interface GroupMember {
     id: string
     firstName: string
     lastName: string
-    email: string
+    email?: string | null
     phone: string
     isActive: boolean
     kycVerified: boolean
