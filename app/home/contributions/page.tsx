@@ -15,7 +15,7 @@ export default async function ContributionsPage({
   const params = await searchParams
   const page = Number(params.page ?? 1)
   const limit = Number(params.limit ?? 20)
-  const type = (params.type as ContributionType) ?? "contribution"
+  const type = (params.type as ContributionType) ?? "savings"
 
   let data
   let apiError

@@ -112,10 +112,11 @@ export interface StatusBadgeProps {
   prettyLabel?: boolean
 }
 
+/** Response from `GET /admin/health` (and similar). */
 export interface HealthStatus {
-  status: string
-  uptime?: number
-  timestamp?: string
+  /** Present on current API: `true` means healthy. */
+  ok?: boolean
+  sub?: number
 }
 
 export interface SummaryCardsProps {
@@ -309,18 +310,31 @@ export interface GetNotificationsParams {
 }
 
 export interface AnalyticsSummary {
-  totalUsers?: number
+  period?: {
+    from: string
+    to: string
+  }
+  usersCreated?: number
+  groupsCreated?: number
+  /** When the API returns separate “active” counts for the summary cards. */
   activeUsers?: number
-  totalGroups?: number
   activeGroups?: number
-  totalContributions?: number
-  totalContributionAmount?: number
-  totalBillings?: number
+  contributions?: {
+    count?: number
+    totalAmount?: number | string
+  }
+  loanRepayments?: {
+    count?: number
+    totalAmount?: number | string
+  }
+  billingPaid?: {
+    count?: number
+    totalTzs?: number | string
+  }
+  /** Legacy / optional; billings rows fall back to `billingPaid` when missing. */
   pendingBillings?: number
   paidBillings?: number
   failedBillings?: number
-  totalRevenue?: number
-  [key: string]: number | string | undefined
 }
 
 export interface GetAnalyticsSummaryParams {

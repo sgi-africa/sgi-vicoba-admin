@@ -17,6 +17,15 @@ export function DashboardPdfDownload({
 }: DashboardPdfDownloadProps) {
   const [pending, setPending] = useState(false)
 
+  const toNumber = (value: number | string | undefined) => {
+    if (typeof value === "number" && !Number.isNaN(value)) return value
+    if (typeof value === "string" && value.trim() !== "") {
+      const n = Number(value)
+      return Number.isNaN(n) ? undefined : n
+    }
+    return undefined
+  }
+
   const handleDownload = useCallback(() => {
     setPending(true)
     try {
@@ -43,12 +52,11 @@ export function DashboardPdfDownload({
       line("API status", 8)
       doc.setFont("helvetica", "normal")
       doc.setFontSize(10)
-      line(`Status: ${health?.status ?? "unavailable"}`)
-      if (health?.uptime !== undefined) {
-        line(`Uptime: ${health.uptime}`)
-      }
-      if (health?.timestamp) {
-        line(`Timestamp: ${formatIso(health.timestamp)}`)
+      if (health) {
+        line(`OK: ${health.ok === true ? "yes" : "no"}`)
+        if (health.sub != null) line(`sub: ${health.sub}`)
+      } else {
+        line("Status: unavailable")
       }
       y += 4
 
@@ -61,46 +69,27 @@ export function DashboardPdfDownload({
       const fmt = (n: number | undefined) =>
         n !== undefined ? n.toLocaleString() : "—"
 
-      line(`Total users: ${fmt(summary?.totalUsers)} (${summary?.activeUsers ?? 0} active)`)
-      line(`Total groups: ${fmt(summary?.totalGroups)} (${summary?.activeGroups ?? 0} active)`)
-      line(`Total contributions: ${fmt(summary?.totalContributions)}`)
-      if (summary?.totalContributionAmount !== undefined) {
-        line(`Contribution amount: ${formatCurrencyTZS(summary.totalContributionAmount)}`)
+      line(`Users created: ${fmt(summary?.usersCreated)}`)
+      line(`Groups created: ${fmt(summary?.groupsCreated)}`)
+      line(`Contributions (count): ${fmt(summary?.contributions?.count)}`)
+      const contributionAmount = toNumber(summary?.contributions?.totalAmount)
+      if (contributionAmount !== undefined) {
+        line(`Contributions (amount): ${formatCurrencyTZS(contributionAmount)}`)
       }
-      y += 2
-      line("Billings")
-      line(`  Pending: ${summary?.pendingBillings ?? 0}`)
-      line(`  Paid: ${summary?.paidBillings ?? 0}`)
-      line(`  Failed: ${summary?.failedBillings ?? 0}`)
-
-      const extraKeys = summary
-        ? Object.keys(summary).filter(
-          (k) =>
-            ![
-              "totalUsers",
-              "activeUsers",
-              "totalGroups",
-              "activeGroups",
-              "totalContributions",
-              "totalContributionAmount",
-              "totalBillings",
-              "pendingBillings",
-              "paidBillings",
-              "failedBillings",
-              "totalRevenue",
-            ].includes(k)
-        )
-        : []
-      if (extraKeys.length > 0) {
-        y += 4
-        doc.setFont("helvetica", "bold")
-        line("Additional fields", 8)
-        doc.setFont("helvetica", "normal")
-        for (const key of extraKeys) {
-          const v = summary?.[key]
-          if (v === undefined) continue
-          line(`  ${key}: ${typeof v === "number" ? fmt(v) : String(v)}`)
-        }
+      line(`Loan repayments (count): ${fmt(summary?.loanRepayments?.count)}`)
+      const repaymentAmount = toNumber(summary?.loanRepayments?.totalAmount)
+      if (repaymentAmount !== undefined) {
+        line(`Loan repayments (amount): ${formatCurrencyTZS(repaymentAmount)}`)
+      }
+      line(`Billing paid (count): ${fmt(summary?.billingPaid?.count)}`)
+      const paidTzs = toNumber(summary?.billingPaid?.totalTzs)
+      if (paidTzs !== undefined) {
+        line(`Billing paid (amount): ${formatCurrencyTZS(paidTzs)}`)
+      }
+      if (summary?.period) {
+        y += 2
+        line(`API period from: ${formatIso(summary.period.from)}`)
+        line(`API period to: ${formatIso(summary.period.to)}`)
       }
 
       const safeDate = new Date().toISOString().slice(0, 10)
