@@ -1,6 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { Upload } from "lucide-react"
 import type { Contribution } from "@/interfaces/interface"
+import {
+  getGroupDisplayName,
+  getGroupIdForLink,
+  getMemberName,
+  getUserIdForLink,
+  isLoanRepaymentRow,
+  parseContributionAmount,
+} from "@/utils/contributions/contributionRow"
 
 export function ContributionsExportButton({
   contributions,
@@ -10,28 +18,27 @@ export function ContributionsExportButton({
   const run = () => {
     const header = [
       "id",
-      "type",
-      "amount",
+      "rowKind",
+      "amountTzs",
       "userId",
       "groupId",
       "memberName",
       "groupName",
-      "createdAt",
+      "date",
     ]
     const escape = (s: string) => `"${String(s).replace(/"/g, '""')}"`
     const rows = contributions.map((c) => {
-      const memberName = c.user
-        ? `${c.user.firstName} ${c.user.lastName}`.trim()
-        : ""
+      const kind = isLoanRepaymentRow(c) ? "loanRepayment" : (c.type ?? "contribution")
+      const at = c.paidAt ?? c.createdAt ?? ""
       return [
         c.id,
-        c.type,
-        c.amount,
-        c.userId,
-        c.groupId,
-        memberName,
-        c.group?.name ?? "",
-        c.createdAt,
+        kind,
+        parseContributionAmount(c),
+        getUserIdForLink(c),
+        getGroupIdForLink(c),
+        getMemberName(c),
+        getGroupDisplayName(c),
+        at,
       ]
         .map((col) => escape(String(col)))
         .join(",")

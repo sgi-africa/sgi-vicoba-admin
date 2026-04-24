@@ -264,14 +264,24 @@ export interface UpdateBillingStatusBody {
 /** Query param for `GET /admin/contributions` — must match backend enum. */
 export type ContributionType = "contribution" | "loanRepayment"
 
+/** Normal contributions row from `type=contribution`, or loan-repayment row (`type=loanRepayment`) which may use `payer` / `loan` / `paidAt`. */
 export interface Contribution {
-  id: string
-  type: ContributionType
-  amount: number
-  groupId: string
-  userId: string
-  createdAt: string
-  updatedAt: string
+  id: string | number
+  type?: ContributionType
+  amount: number | string
+  groupId?: string
+  userId?: string
+  createdAt?: string
+  updatedAt?: string
+  /** Loan repayments: who paid. */
+  paidBy?: string | number
+  paidAt?: string
+  loanId?: string | number
+  loan?: {
+    id: string | number
+    groupId: string | number
+    name?: string
+  }
   group?: {
     id: string
     name: string
@@ -280,6 +290,13 @@ export interface Contribution {
     id: string
     firstName: string
     lastName: string
+  }
+  /** Loan repayments: member profile (API name) */
+  payer?: {
+    id: string | number
+    firstName: string
+    lastName: string
+    email?: string
   }
 }
 
