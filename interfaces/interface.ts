@@ -207,6 +207,20 @@ export interface GetGroupMembersParams {
   limit?: number
 }
 
+export interface ContributionsPageProps {
+  searchParams: Promise<{
+    page?: string
+    limit?: string
+    type?: string
+    groupId?: string
+    userId?: string
+    from?: string
+    to?: string
+    q?: string
+  }>
+}
+
+
 export type PaymentStatus = "PENDING" | "PAID" | "FAILED"
 
 export interface Billing {
@@ -238,7 +252,7 @@ export interface UpdateBillingStatusBody {
   paidAt?: string
 }
 
-export type ContributionType = "contribution" | "loanRepayment"
+export type ContributionType = "savings" | "jamii" | "loanRepayment"
 
 export interface Contribution {
   id: string
@@ -267,6 +281,7 @@ export interface GetContributionsParams {
   userId?: string
   from?: string
   to?: string
+  q?: string
 }
 
 export interface Notification {
