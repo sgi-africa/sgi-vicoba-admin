@@ -59,11 +59,11 @@ export default async function BillingsPage({ searchParams }: BillingsPageProps) 
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-3 items-center">
+      {/* <div className="flex flex-wrap gap-3 items-center">
         <Suspense>
           <SearchInput placeholder="Search by group…" paramKey="groupId" />
         </Suspense>
-      </div>
+      </div> */}
 
       <BillingTable billings={data?.data ?? []} />
 

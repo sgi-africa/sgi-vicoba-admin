@@ -1,4 +1,6 @@
 import { getAnalyticsSummary, getHealthStatus } from "./_actions"
+import { getUsers } from "./users/_actions"
+import { getGroups } from "./groups/_actions"
 import { SummaryCards } from "@/components/analytics/summary-cards"
 import { DashboardPdfDownload } from "@/components/analytics/dashboard-pdf-download"
 
@@ -7,10 +9,30 @@ export default async function DashboardPage() {
   const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
   const to = now.toISOString()
 
-  const [summary, health] = await Promise.all([
+  const [
+    summary,
+    health,
+    usersList,
+    usersActiveList,
+    groupsList,
+    groupsActiveList,
+  ] = await Promise.all([
     getAnalyticsSummary({ from, to }),
     getHealthStatus(),
+    getUsers({ page: 1, limit: 1 }),
+    getUsers({ page: 1, limit: 1, isActive: "true" }),
+    getGroups({ page: 1, limit: 1 }),
+    getGroups({ page: 1, limit: 1, isActive: "true" }),
   ])
+
+  const usersDirectory = {
+    total: usersList?.total ?? 0,
+    activeTotal: usersActiveList?.total ?? 0,
+  }
+  const groupsDirectory = {
+    total: groupsList?.total ?? 0,
+    activeTotal: groupsActiveList?.total ?? 0,
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -28,7 +50,12 @@ export default async function DashboardPage() {
           health={health}
         />
       </div>
-      <SummaryCards summary={summary} health={health} />
+      <SummaryCards
+        summary={summary}
+        health={health}
+        usersDirectory={usersDirectory}
+        groupsDirectory={groupsDirectory}
+      />
     </div>
   )
 }

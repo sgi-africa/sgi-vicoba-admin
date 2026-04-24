@@ -27,7 +27,12 @@ function StatCard({ title, value, sub, icon }: StatCardProps) {
 
 
 
-export function SummaryCards({ summary, health }: SummaryCardsProps) {
+export function SummaryCards({
+  summary,
+  health,
+  usersDirectory,
+  groupsDirectory,
+}: SummaryCardsProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -56,14 +61,14 @@ export function SummaryCards({ summary, health }: SummaryCardsProps) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
           title="Total Users"
-          value={summary?.usersCreated}
-          sub={`${summary?.activeUsers ?? 0} active`}
+          value={usersDirectory?.total}
+          sub={`${usersDirectory?.activeTotal ?? 0} active`}
           icon={<Users className="size-4" />}
         />
         <StatCard
           title="Total Groups"
-          value={summary?.groupsCreated}
-          sub={`${summary?.activeGroups ?? 0} active`}
+          value={groupsDirectory?.total}
+          sub={`${groupsDirectory?.activeTotal ?? 0} active`}
           icon={<UsersRound className="size-4" />}
         />
         <StatCard
