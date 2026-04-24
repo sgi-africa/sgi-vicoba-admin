@@ -59,15 +59,35 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <Card className="shadow-sm border-border/60">
-                <CardHeader className="text-center pb-2">
-                    <CardTitle className="text-xl">Login</CardTitle>
-                    <CardDescription>Enter your credentials below to continue to your account</CardDescription>
+            <Card
+                className="overflow-hidden rounded-3xl border-white/12 bg-white/10 text-white shadow-2xl shadow-black/40 backdrop-blur-xl"
+                style={{
+                    boxShadow:
+                        "0 1px 0 rgba(255,255,255,0.08) inset, 0 24px 80px rgba(0,0,0,0.45)",
+                }}
+            >
+                <CardHeader className="space-y-3 pb-4 text-center">
+                    <CardTitle className="text-2xl font-semibold tracking-tight text-white">
+                        Welcome back
+                    </CardTitle>
+                    <CardDescription className="text-sm leading-6 text-white/65">
+                        Sign in to access the admin dashboard.
+                    </CardDescription>
+                    <div
+                        aria-hidden
+                        className="mx-auto h-px w-24 rounded-full bg-white/15"
+                        style={{
+                            boxShadow:
+                                "0 0 0 1px rgba(255,255,255,0.06), 0 0 40px color-mix(in srgb, var(--brand-accent) 35%, transparent)",
+                        }}
+                    />
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                        <div className="space-y-2.5">
+                            <Label htmlFor="email" className="text-sm font-medium text-white/85">
+                                Email
+                            </Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -75,15 +95,17 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                                 disabled={loading}
                                 {...register("email")}
                                 aria-invalid={!!errors.email}
-                                className="h-10"
+                                className="h-11 border-white/10 bg-black/15 text-white placeholder:text-white/35 focus-visible:border-brand-accent focus-visible:ring-brand-accent/40"
                             />
                             {errors.email && (
-                                <p className="text-sm text-destructive">{errors.email.message}</p>
+                                <p className="text-sm text-rose-300">{errors.email.message}</p>
                             )}
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2.5">
                             <div className="flex items-center">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password" className="text-sm font-medium text-white/85">
+                                    Password
+                                </Label>
                             </div>
                             <Input
                                 id="password"
@@ -91,13 +113,21 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                                 disabled={loading}
                                 {...register("password")}
                                 aria-invalid={!!errors.password}
-                                className="h-10"
+                                className="h-11 border-white/10 bg-black/15 text-white placeholder:text-white/35 focus-visible:border-brand-accent focus-visible:ring-brand-accent/40"
                             />
                             {errors.password && (
-                                <p className="text-sm text-destructive">{errors.password.message}</p>
+                                <p className="text-sm text-rose-300">{errors.password.message}</p>
                             )}
                         </div>
-                        <Button type="submit" className="w-full h-10" disabled={loading}>
+                        <Button
+                            type="submit"
+                            className="h-11 w-full rounded-full bg-white/10 text-sm font-medium text-white shadow-sm ring-1 ring-white/15 backdrop-blur-md transition hover:bg-white/14 hover:text-white disabled:bg-white/10 disabled:text-white/55"
+                            style={{
+                                boxShadow:
+                                    "0 1px 0 rgba(255,255,255,0.06) inset, 0 18px 50px rgba(0,0,0,0.35)",
+                            }}
+                            disabled={loading}
+                        >
                             {loading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
