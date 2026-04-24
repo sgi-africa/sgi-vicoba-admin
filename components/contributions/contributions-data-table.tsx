@@ -114,9 +114,13 @@ export function ContributionsDataTable({
             </TableCell>
             <TableCell className="py-3 px-4">
               <StatusBadge
-                status={c.type === "savings" ? "SAVINGS" : c.type === "jamii" ? "JAMII" : "LOAN_REPAYMENT"}
+                status={
+                  c.type === "loanRepayment" ? "PENDING" : "ACTIVE"
+                }
                 label={
-                  c.type === "savings" ? "Savings" : c.type === "jamii" ? "Jamii" : "Loan repayment"
+                  c.type === "loanRepayment"
+                    ? "Loan repayment"
+                    : "Contribution"
                 }
               />
             </TableCell>

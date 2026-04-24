@@ -24,8 +24,8 @@ export function TypeToggle({ currentType }: TypeToggleProps) {
     <div className="flex rounded-lg border p-1 gap-1 w-fit">
       <Button
         size="sm"
-        variant={currentType === "savings" ? "default" : "ghost"}
-        onClick={() => setType("savings")}
+        variant={currentType === "contribution" ? "default" : "ghost"}
+        onClick={() => setType("contribution")}
       >
         Contributions
       </Button>

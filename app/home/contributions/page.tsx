@@ -6,8 +6,8 @@ import { DataError } from "@/components/shared/data-error"
 import { handleApiError } from "@/lib/apiError"
 import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import type { ContributionType } from "@/interfaces/interface"
 import type { ContributionsPageProps } from "@/interfaces/interface"
+import { parseContributionTypeParam } from "@/utils/contributions/contributionType"
 
 export default async function ContributionsPage({
   searchParams,
@@ -15,7 +15,7 @@ export default async function ContributionsPage({
   const params = await searchParams
   const page = Number(params.page ?? 1)
   const limit = Number(params.limit ?? 20)
-  const type = (params.type as ContributionType) ?? "savings"
+  const type = parseContributionTypeParam(params.type)
 
   let data
   let apiError

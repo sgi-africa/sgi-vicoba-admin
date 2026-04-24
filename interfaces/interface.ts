@@ -261,7 +261,8 @@ export interface UpdateBillingStatusBody {
   paidAt?: string
 }
 
-export type ContributionType = "savings" | "jamii" | "loanRepayment"
+/** Query param for `GET /admin/contributions` — must match backend enum. */
+export type ContributionType = "contribution" | "loanRepayment"
 
 export interface Contribution {
   id: string
