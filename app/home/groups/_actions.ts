@@ -27,15 +27,16 @@ function applyGroupMemberFilters(
   if (t) {
     out = out.filter((m) => {
       const name = m.user
-        ? `${m.user.firstName} ${m.user.lastName}`.toLowerCase()
+        ? `${m.user.firstName ?? ""} ${m.user.lastName ?? ""}`.trim().toLowerCase()
         : ""
-      const email = m.user?.email.toLowerCase() ?? ""
-      const role = m.role.toLowerCase()
+      const email = (m.user?.email ?? "").toLowerCase()
+      const role = (m.role ?? "").toLowerCase()
+      const uid = (m.userId ?? "").toLowerCase()
       return (
         name.includes(t) ||
         email.includes(t) ||
         role.includes(t) ||
-        m.userId.toLowerCase().includes(t)
+        uid.includes(t)
       )
     })
   }
@@ -68,7 +69,7 @@ function mapGroupMember(row: {
         id: String(row.user.id),
         firstName: row.user.firstName,
         lastName: row.user.lastName,
-        email: row.user.email,
+        email: row.user.email == null ? "" : String(row.user.email),
         phone: row.user.phone,
         isActive: row.user.isActive,
         kycVerified: row.user.kycVerified,
