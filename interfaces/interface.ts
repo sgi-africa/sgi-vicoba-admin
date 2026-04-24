@@ -84,7 +84,12 @@ export interface GroupActionsProps {
 
 export interface GroupDetailPageProps {
   params: Promise<{ groupId: string }>
-  searchParams: Promise<{ page?: string; limit?: string }>
+  searchParams: Promise<{
+    page?: string
+    limit?: string
+    q?: string
+    kycVerified?: string
+  }>
 }
 
 export interface NotificationsPageProps {
@@ -207,6 +212,8 @@ export interface GetGroupsParams {
 export interface GetGroupMembersParams {
   page?: number
   limit?: number
+  q?: string
+  kycVerified?: string
 }
 
 export interface ContributionsPageProps {
