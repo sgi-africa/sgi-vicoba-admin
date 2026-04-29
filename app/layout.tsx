@@ -17,10 +17,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "SGI Africa Admin Portal",
-    template: "%s | SGI Africa Admin Portal",
+    template: "%s | SGI VICOBA Admin Portal",
   },
   description: "Official admin portal for managing SGI Africa VICOBA operations and administrative workflows.",
-  applicationName: "SGI Africa Admin Portal",
+  applicationName: "SGI VICOBA Admin Portal",
 };
 
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode }>) {
