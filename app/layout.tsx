@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "SGI Africa Admin Portal",
+    default: "SGI VICOBA Admin Portal",
     template: "%s | SGI VICOBA Admin Portal",
   },
-  description: "Official admin portal for managing SGI Africa VICOBA operations and administrative workflows.",
+  description: "Official admin portal for managing SGI VICOBA operations and administrative workflows.",
   applicationName: "SGI VICOBA Admin Portal",
 };
 
