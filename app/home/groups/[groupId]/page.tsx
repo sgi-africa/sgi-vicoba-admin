@@ -3,7 +3,6 @@ import { getGroupById, getGroupMembers } from "../_actions"
 import { GroupDetailCard } from "@/components/groups/group-detail-card"
 import { GroupMembersTable } from "@/components/groups/group-members-table"
 import { GroupMembersToolbar } from "@/components/groups/group-members-toolbar"
-import { GroupActions } from "@/components/groups/group-actions"
 import { DataError } from "@/components/shared/data-error"
 import { Pagination } from "@/components/shared/pagination"
 import { handleApiError } from "@/lib/apiError"
@@ -62,7 +61,6 @@ export default async function GroupDetailPage({
       </div>
 
       <GroupDetailCard group={group} />
-      <GroupActions group={group} />
 
       <div className="space-y-3">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

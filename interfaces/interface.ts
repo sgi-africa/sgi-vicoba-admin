@@ -66,6 +66,7 @@ export interface GroupsPageProps {
     billingStatus?: string
     isActive?: string
     isDeleted?: string
+    approvalStatus?: string
   }>
 }
 
@@ -80,6 +81,8 @@ export interface GroupMembersTableProps {
 
 export interface GroupActionsProps {
   group: AdminGroup
+  /** Applied to the main trigger `<Button>` (e.g. `w-full`). */
+  triggerClassName?: string
 }
 
 export interface GroupDetailPageProps {
@@ -175,6 +178,11 @@ export interface GetUsersParams {
 
 export type BillingStatus = "INACTIVE" | "ACTIVE" | "OVERDUE"
 
+export type GroupApprovalStatus =
+  | "PENDING"
+  | "APPROVED"
+  | "REJECTED"
+
 export interface AdminGroup {
   id: string
   name: string
@@ -182,6 +190,8 @@ export interface AdminGroup {
   isActive: boolean
   isDeleted: boolean
   billingStatus: BillingStatus
+  approvalStatus?: GroupApprovalStatus | string | null
+  approvalRejectionReason?: string | null
   memberCount?: number
   createdAt: string
   updatedAt: string
@@ -211,6 +221,7 @@ export interface GetGroupsParams {
   billingStatus?: BillingStatus
   isActive?: string
   isDeleted?: string
+  approvalStatus?: string
 }
 
 export interface GetGroupMembersParams {

@@ -28,6 +28,7 @@ export default async function GroupsPage({ searchParams }: GroupsPageProps) {
         | undefined,
       isActive: params.isActive,
       isDeleted: params.isDeleted,
+      approvalStatus: params.approvalStatus,
     })
   } catch (error) {
     apiError = handleApiError(error)
