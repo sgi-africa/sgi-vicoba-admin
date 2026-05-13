@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -12,6 +12,7 @@ import type { AdminGroup } from "@/interfaces/interface"
 import { groupInitials } from "@/utils/groups/groupInitials"
 import { ActiveBadge } from "@/components/users/active-badge"
 import { BillingStatusBadge } from "./billing-status-badge"
+import { ApprovalStatusBadge } from "./approval-status-badge"
 
 export function GroupsDataTable({ groups }: { groups: AdminGroup[] }) {
   const [selected, setSelected] = React.useState<Set<string>>(new Set())
@@ -60,6 +61,8 @@ export function GroupsDataTable({ groups }: { groups: AdminGroup[] }) {
           <TableHead className="px-4">Group</TableHead>
           <TableHead className="px-4">Billing</TableHead>
           <TableHead className="px-4">Status</TableHead>
+          <TableHead className="px-4">Approval</TableHead>
+          <TableHead className="min-w-32 px-4">Rejection reason</TableHead>
           <TableHead className="px-4">Members</TableHead>
           <TableHead className="px-4">Created</TableHead>
           <TableHead className="w-12 pr-6 text-right" />
@@ -92,8 +95,8 @@ export function GroupsDataTable({ groups }: { groups: AdminGroup[] }) {
                       ? "Deleted group"
                       : group.description
                         ? (group.description.length > 48
-                            ? `${group.description.slice(0, 48)}…`
-                            : group.description)
+                          ? `${group.description.slice(0, 48)}…`
+                          : group.description)
                         : "VICOBA group"}
                   </p>
                 </div>
@@ -104,6 +107,21 @@ export function GroupsDataTable({ groups }: { groups: AdminGroup[] }) {
             </TableCell>
             <TableCell className="py-3 px-4">
               <ActiveBadge active={group.isActive} />
+            </TableCell>
+            <TableCell className="py-3 px-4">
+              <ApprovalStatusBadge status={group.approvalStatus} />
+            </TableCell>
+            <TableCell className="max-w-56 py-3 px-4 align-top">
+              <p
+                className="line-clamp-2 text-sm text-muted-foreground"
+                title={
+                  group.approvalRejectionReason?.trim() || undefined
+                }
+              >
+                {group.approvalRejectionReason?.trim()
+                  ? group.approvalRejectionReason
+                  : "—"}
+              </p>
             </TableCell>
             <TableCell className="py-3 px-4">
               <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">

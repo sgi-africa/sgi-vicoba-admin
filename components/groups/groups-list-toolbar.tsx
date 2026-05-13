@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { SlidersHorizontal } from "lucide-react"
 import type { AdminGroup } from "@/interfaces/interface"
 import { GroupsExportButton } from "./groupsExportButton"
-import { billingFilterLabel } from "@/utils/groups/billingFilterLabel"
+import { approvalFilterLabel, billingFilterLabel } from "@/utils/groups/billingFilterLabel"
 
 
 export function GroupsListToolbar({ groups }: { groups: AdminGroup[] }) {
@@ -91,6 +91,42 @@ export function GroupsListToolbar({ groups }: { groups: AdminGroup[] }) {
                   href={buildGroupsListHref(sp, { billingStatus: "OVERDUE" })}
                 >
                   Overdue
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel className="text-center text-xs">
+                {approvalFilterLabel(sp)}
+              </DropdownMenuLabel>
+              <DropdownMenuItem asChild>
+                <Link href={buildGroupsListHref(sp, { approvalStatus: null })}>
+                  Approval - All
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href={buildGroupsListHref(sp, {
+                    approvalStatus: "PENDING",
+                  })}
+                >
+                  Pending
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href={buildGroupsListHref(sp, {
+                    approvalStatus: "APPROVED",
+                  })}
+                >
+                  Approved
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href={buildGroupsListHref(sp, {
+                    approvalStatus: "REJECTED",
+                  })}
+                >
+                  Rejected
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -6,9 +6,10 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from "@/components/ui/button"
 import { updateGroupStatus } from "@/app/home/groups/_actions"
 import { GroupActionsProps } from "@/interfaces/interface"
+import { cn } from "@/lib/utils"
 
 
-export function GroupActions({ group }: GroupActionsProps) {
+export function GroupActions({ group, triggerClassName }: GroupActionsProps) {
   const [isPending, startTransition] = useTransition()
 
   const handleToggle = () => {
@@ -31,6 +32,7 @@ export function GroupActions({ group }: GroupActionsProps) {
           variant={group.isActive ? "destructive" : "default"}
           size="sm"
           disabled={isPending}
+          className={cn(triggerClassName)}
         >
           {group.isActive ? "Deactivate Group" : "Activate Group"}
         </Button>

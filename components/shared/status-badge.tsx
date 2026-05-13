@@ -37,6 +37,7 @@ const STATUS_STYLES: Record<string, string> = {
   PROCESSING: AMBER,
   SCHEDULED: AMBER,
   DRAFT: AMBER,
+  APPROVED: EMERALD,
   // Contributions
   SAVINGS: EMERALD,
   JAMII: AMBER,

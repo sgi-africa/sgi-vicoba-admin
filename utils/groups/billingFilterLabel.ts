@@ -7,3 +7,11 @@ export function billingFilterLabel(sp: ReturnType<typeof useSearchParams>) {
     if (b === "OVERDUE") return "Billing: Overdue"
     return "Billing: All"
 }
+
+export function approvalFilterLabel(sp: ReturnType<typeof useSearchParams>) {
+    const a = sp.get("approvalStatus")
+    if (a === "PENDING") return "Approval: Pending"
+    if (a === "APPROVED") return "Approval: Approved"
+    if (a === "REJECTED") return "Approval: Rejected"
+    return "Approval: All"
+}
