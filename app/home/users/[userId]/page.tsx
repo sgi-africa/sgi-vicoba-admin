@@ -1,6 +1,5 @@
 import { getUserById } from "../_actions"
 import { UserDetailCard } from "@/components/users/user-detail-card"
-import { UserActions } from "@/components/users/user-actions"
 import { DataError } from "@/components/shared/data-error"
 import { handleApiError } from "@/lib/apiError"
 import { Button } from "@/components/ui/button"
@@ -46,7 +45,6 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
       </div>
 
       <UserDetailCard user={user} />
-      <UserActions user={user} />
     </div>
   )
 }

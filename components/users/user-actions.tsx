@@ -6,9 +6,10 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from "@/components/ui/button"
 import { updateUserStatus, updateUserKyc } from "@/app/home/users/_actions"
 import { UserActionsProps } from "@/interfaces/interface"
+import { cn } from "@/lib/utils"
 
 
-export function UserActions({ user }: UserActionsProps) {
+export function UserActions({ user, triggerClassName }: UserActionsProps) {
   const [isPending, startTransition] = useTransition()
 
   const handleStatusToggle = () => {
@@ -38,13 +39,14 @@ export function UserActions({ user }: UserActionsProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex w-full flex-col gap-2">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
             variant={user.isActive ? "destructive" : "default"}
             size="sm"
             disabled={isPending}
+            className={cn(triggerClassName)}
           >
             {user.isActive ? "Deactivate" : "Activate"}
           </Button>
@@ -70,7 +72,7 @@ export function UserActions({ user }: UserActionsProps) {
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline" size="sm" disabled={isPending}>
+          <Button variant="outline" size="sm" disabled={isPending} className={cn(triggerClassName)}>
             {user.kycVerified ? "Revoke KYC" : "Verify KYC"}
           </Button>
         </AlertDialogTrigger>
