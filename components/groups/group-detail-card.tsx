@@ -4,14 +4,8 @@ import { Separator } from "@/components/ui/separator"
 import { StatusBadge } from "@/components/shared/status-badge"
 import { GroupDetailCardProps } from "@/interfaces/interface"
 import { GroupActions } from "@/components/groups/group-actions"
-import {
-  Ban,
-  BookMarked,
-  Calendar,
-  CircleCheck,
-  ClipboardSignature,
-  Users,
-} from "lucide-react"
+import { GroupApprovalActions } from "@/components/groups/group-approval-actions"
+import { BookMarked, Calendar, ClipboardSignature, Users } from "lucide-react"
 
 export function GroupDetailCard({ group }: GroupDetailCardProps) {
   const formattedCreated = new Date(group.createdAt).toLocaleDateString(
@@ -106,26 +100,7 @@ export function GroupDetailCard({ group }: GroupDetailCardProps) {
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               Review
             </p>
-            <div className="grid grid-cols-2 gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="w-full gap-2 border-primary/40 text-primary hover:bg-primary/5"
-              >
-                <CircleCheck className="size-3.5 shrink-0" aria-hidden />
-                <span className="truncate">Approve</span>
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="w-full gap-2 border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive"
-              >
-                <Ban className="size-3.5 shrink-0" aria-hidden />
-                <span className="truncate">Disapprove</span>
-              </Button>
-            </div>
+            <GroupApprovalActions group={group} />
           </div>
 
           <Separator className="bg-border" />
