@@ -56,6 +56,8 @@ export interface UserDetailCardProps {
 
 export interface UserActionsProps {
   user: AdminUser
+  /** Applied to each admin action trigger `<Button>` (e.g. `w-full`). */
+  triggerClassName?: string
 }
 
 export interface GroupsPageProps {
@@ -150,6 +152,8 @@ export interface AdminUser {
   isDeleted: boolean
   kycVerified: boolean
   idDocumentUrl?: string | null
+  /** e.g. national ID type label from KYC upload */
+  idDocumentType?: string | null
   createdAt: string
   updatedAt: string
   memberships?: GroupMembership[]
@@ -183,6 +187,42 @@ export type GroupApprovalStatus =
   | "APPROVED"
   | "REJECTED"
 
+
+export type GroupRegistrationDocumentType = "BRELA" | "NGO" | "MUNICIPAL_DISTRICT"
+
+export type GroupRegistrationVerificationStatus =
+  | "PENDING"
+  | "APPROVED"
+  | "REJECTED"
+
+export interface GroupConstitutionVersion {
+  id: number
+  groupId: number
+  version: number
+  fileUrl: string
+  publicId: string | null
+  mimeType: string
+  byteSize: number
+  uploadedByUserId: number
+  createdAt: string
+}
+
+export interface GroupRegistrationDocument {
+  id: number
+  groupId: number
+  documentType: GroupRegistrationDocumentType
+  verificationStatus: GroupRegistrationVerificationStatus
+  fileUrl: string
+  publicId: string | null
+  mimeType: string
+  byteSize: number
+  uploadedByUserId: number
+  createdAt: string
+  verifiedAt: string | null
+  verifiedByUserId: number | null
+  rejectionReason: string | null
+}
+
 export interface AdminGroup {
   id: string
   name: string
@@ -195,6 +235,9 @@ export interface AdminGroup {
   memberCount?: number
   createdAt: string
   updatedAt: string
+  /** Present on group detail; latest version chosen in UI when multiple. */
+  constitutionVersions?: GroupConstitutionVersion[]
+  registrationDocuments?: GroupRegistrationDocument[]
 }
 
 export interface GroupMember {
