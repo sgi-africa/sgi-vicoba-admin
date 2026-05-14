@@ -143,3 +143,22 @@ export async function updateGroupStatus(
     return { ok: false, error: err.message, status: err.status }
   }
 }
+
+export type UpdateGroupApprovalPayload =
+  | { approvalStatus: "APPROVED" }
+  | { approvalStatus: "REJECTED"; rejectionReason: string }
+
+export async function updateGroupApproval(
+  groupId: string,
+  payload: UpdateGroupApprovalPayload
+): Promise<ApiActionResult> {
+  try {
+    await api.patch(`/admin/groups/${groupId}/approval`, payload)
+    revalidatePath("/home/groups")
+    revalidatePath(`/home/groups/${groupId}`)
+    return { ok: true }
+  } catch (error) {
+    const err = handleApiError(error)
+    return { ok: false, error: err.message, status: err.status }
+  }
+}
